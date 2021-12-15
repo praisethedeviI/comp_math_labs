@@ -1,0 +1,108 @@
+% Listing
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+
+\lstset{
+	commentstyle={\color{gray}\ttfamily},
+	stringstyle={\color{ForestGreen}\ttfamily},
+	keywordstyle={\color{NavyBlue}\bfseries},
+	language=Java,   
+	frame=single,
+	basicstyle=\ttfamily\footnotesize,
+	showspaces=false,                
+	showtabs=false,     
+	showstringspaces=false, 
+	tabsize=2,
+	captionpos=b,
+	breaklines=true,                        
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=-10pt,                          
+}
+
+% Dates
+% https://ctan.org/pkg/datetime
+\usepackage{datetime}
+\newdateformat{daydate}{
+	\twodigit{\THEDAY}}
+
+\newdateformat{monthdate}{
+	\monthname[\THEMONTH]}
+
+% Commands
+\newcommand{\makesection}[1]{
+	\section*{#1}
+	\addcontentsline{toc}{section}{#1}
+}
+\newcommand{\makesubsection}[1]{
+	\subsection*{#1}
+	\addcontentsline{toc}{subsection}{#1}
+}
+
+\newcommand{\createtitle}[1]{
+	\begin{titlepage}
+		\thispagestyle{empty}
+		\begin{center}
+			\vspace*{-3cm}
+			\thispagestyle{empty}
+			\includegraphics[height=1.2cm]{fefulogo.pdf}
+			\vspace{0.3cm}
+			
+			\footnotesize
+			МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ
+			\vspace{0.3cm}
+			
+			Федеральное государственное автономное образовательное учреждение высшего образования
+			
+			\normalsize
+			\textbf{<<Дальневосточный федеральный университет>>}
+			
+			\textbf{(ДВФУ)}
+			\vspace{0.3cm}
+			\hrule height 3pt
+			\vspace{1pt}
+			\hrule height 1pt
+			\vspace{0.6cm}
+			
+			\textbf{ШКОЛА ЕСТЕСТВЕННЫХ НАУК}
+			\vspace{0.3cm}
+			
+			\textbf{Кафедра информатики, математического и компьютерного моделирования}
+			\vspace{1cm}
+			
+			\textbf{ОТЧЕТ}
+			\vspace{0.5cm}
+			
+			к лабораторной работе №#1 по дисциплине
+			
+			<<Вычислительная математика>>
+			\vspace{0.5cm}
+			
+			Направление подготовки
+			
+			01.03.02 <<Прикладная математика и информатика>>
+			\vspace{1.2cm}
+			
+			\begin{multicols}{2}
+				\vfill \null
+				\columnbreak
+				\begin{flushleft}
+					Выполнил студент\\
+					гр. Б9119-01.03.02систпро\\
+					\begin{tabular}{c p{0.1pt} c} 
+						Нагорнов С.С. && \space\\ \cline{1-1}\cline{3-3}
+						\small\textit{(ФИО)} && \small\textit{(Подпись)}\\
+					\end{tabular}\\
+					\vspace{0.3cm}
+					<<\underline{\daydate\today}>> \underline{\hspace{0.6cm}\space\monthdate\today\hspace{0.6cm}} 20\underline{21} г.
+				\end{flushleft}
+			\end{multicols}
+			\vfill
+			
+			\textbf{г. Владивосток}
+			
+			\textbf{2021}
+			\vspace*{-3cm}
+		\end{center}
+	\end{titlepage}
+}

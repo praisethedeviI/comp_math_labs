@@ -91,8 +91,8 @@ def main():
     print('\nСравним минимальное и максимальное значения d^11y/dx^11:')
     max_der = eleven_derivative(x[0])
     print(f'11 производная от x = {x[0]} равна {max_der}')
-    min_der = eleven_derivative(x[len(x) - 1])
-    print(f'11 производная от x = {x[len(x) - 1]} равна {min_der}')
+    min_der = eleven_derivative(x[-1])
+    print(f'11 производная от x = {x[-1]} равна {min_der}')
 
     print('\nСравним минимальное и максимальное значения остаточных членов:')
 
@@ -104,12 +104,22 @@ def main():
 
     for i in range(count + 1):
         for j in range(2, 5):
-            omega_dot[j] *= (x_dot[j] - x[i])
+            omega_dot[j] *= abs(x_dot[j] - x[i])
 
+    max_R = max_der * omega_dot[2] / math.factorial(count + 1)
+    min_R = min_der * omega_dot[2] / math.factorial(count + 1)
+    print(f'минимальная R** равна {min_R}')
+    print(f'максимальная R** равна {max_R}')
+    print()
+    max_R = max_der * omega_dot[3] / math.factorial(count + 1)
+    min_R = min_der * omega_dot[3] / math.factorial(count + 1)
+    print(f'минимальная R*** равна {min_R}')
+    print(f'максимальная R*** равна {max_R}')
+    print()
     max_R = max_der * omega_dot[4] / math.factorial(count + 1)
     min_R = min_der * omega_dot[4] / math.factorial(count + 1)
-    print(f'минимальная R равна {min_R}')
-    print(f'максимальная R равна {max_R}')
+    print(f'минимальная R**** равна {min_R}')
+    print(f'максимальная R**** равна {max_R}')
 
     R_dot = {
         2: eleven_derivative(x_dot[2]) * omega_dot[2] / math.factorial(

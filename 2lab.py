@@ -13,9 +13,9 @@ x_dot = {
 
 x = []
 y = []
-i = int()
-L_1 = float()
-L_2 = float()
+i = 0
+L_1 = 0.
+L_2 = 0.
 
 
 def function(x):
