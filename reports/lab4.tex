@@ -1,0 +1,59 @@
+\documentclass[14pt, a4paper, fleqn]{extarticle}
+\usepackage[russian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, mathtools}
+\usepackage{multicol}
+\usepackage{tabularx}
+
+\usepackage{graphicx}
+
+\usepackage{style}
+
+\begin{document}
+	\createtitle{4}
+	\tableofcontents
+	\pagebreak
+	\makesection{Введение}
+	Дифференцирование функции с помощью многочлена Лагранжа. Вариант 16
+	\makesection{Дифференцирование интерполяционной формулы}
+	\makesubsection{Постановка задачи}
+	Продифференцировать несколько раз интерполяционную формулу Лагранжа:
+	\begin{multline*}
+	L^{(k)}_n(x_m) \approx f^{(k)}(x_m), \quad m=0, \quad n=3, \quad k=2 \\
+	y = x^2 + \ln(x + 5) \quad [a,b] = [0.5, 1.0] \\
+	\end{multline*}
+	\makesubsection{Дифференцирование формулы}
+	Для начала построим полином Лагранжа 3-го порядка:
+	\begin{multline*}
+		L_3(x) = f(x_0)\dfrac{(x-x_1)(x-x_2)(x-x_3)}{(x_0-x_1)(x_0-x_2)(x_0-x_3)} + \\		+f(x_1)\dfrac{(x-x_0)(x-x_2)(x-x_3)}{(x_1-x_0)(x_1-x_2)(x_1-x_3)} +\\
+		+f(x_2)\dfrac{(x-x_0)(x-x_1)(x-x_3)}{(x_2-x_0)(x_2-x_1)(x_2-x_3)} +\\
+		+f(x_3)\dfrac{(x-x_0)(x-x_1)(x-x_2)}{(x_3-x_0)(x_3-x_1)(x_3-x_2)} \\
+	\end{multline*}
+	Продифференцируем данный полином дважды и получаем результат:
+	\[
+	L''_3(x_0) \approx 1.9664270212160773
+	\]
+	Сама вторая производная $y$ имеет значение:
+	\[
+	y''(x_0) = 1.9669421487603307
+	\]
+	Сравним их:
+	\[
+	L''_3(x_0) - y''(x_0) \approx -0.0005151275442534242
+	\]
+	\makesubsection{Остаточный член}
+	Найдем остаточный член по формуле:
+	\[
+	R_{n, k}(x_m) = \dfrac{f^{(n+1)}(\xi)}{(n+1)!}\omega^{(k)}_{n+1}(x_m), \quad \xi \in [a, b]
+	\]
+	
+	\[
+	R_{3, 2}(x_0) \approx -1.5026284644158672e-05
+	\]
+	
+	\makesection{Приложения}
+	Код программы, вычисляющей значения формул, приложен отдельным файлом.
+	\makesection{Вывод}
+	В данной лабораторной работе было произведено построение интерполяционной формулы Лагранжа, а также вычисление ее производной для нахождения заданной функции.
+		
+\end{document}
