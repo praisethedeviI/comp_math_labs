@@ -24,13 +24,9 @@ def func(x):
     return x ** 2 + math.log(x + 5)
 
 
-def diff(i, j):  # difference between x_i and x_j
-    return (i - j) * h
-
-
 def interpolation(x, x0, x1, x2, x3):
     return func(x0) * ((x - x1) * (x - x2) * (x - x3)) / (
-            (x0 - x1) * (x0 - x2) * (x0 - x3)) + \
+                   (x0 - x1) * (x0 - x2) * (x0 - x3)) + \
            func(x1) * ((x - x0) * (x - x2) * (x - x3)) / (
                    (x1 - x0) * (x1 - x2) * (x1 - x3)) + \
            func(x2) * ((x - x0) * (x - x1) * (x - x3)) / (
@@ -61,8 +57,7 @@ def main():
 
     print(f'L" = {inter_der(x[0], x[0], x[1], x[2], x[3])}')
     print(f'y" = {second_der(x[0])}')
-    print(
-        f'L" - y" = {inter_der(x[0], x[0], x[1], x[2], x[3]) - second_der(x[0])}')
+    print(f'L" - y" = {inter_der(x[0], x[0], x[1], x[2], x[3]) - second_der(x[0])}')
 
     print(f'Остаточный член минимальный {remainder(x[0], x[0], x[0], x[1], x[2], x[3])}')
     print(f'Остаточный член максимальный {remainder(x[0], x[-1], x[0], x[1], x[2], x[3])}')

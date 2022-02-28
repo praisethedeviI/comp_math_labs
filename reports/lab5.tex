@@ -1,0 +1,94 @@
+\documentclass[14pt, a4paper, fleqn]{extarticle}
+\usepackage[russian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, mathtools}
+\usepackage{multicol}
+\usepackage{tabularx}
+
+\usepackage{graphicx}
+
+\usepackage{style}
+
+\begin{document}
+	\createtitle{5}
+	\tableofcontents
+	\pagebreak
+	\makesection{Введение}	
+	Интегрирование функции с помощью формулы Гаусса. Вариант 16
+	\makesection{Численное интегрирование}
+	\makesubsection{Постановка задачи}
+	Провести численную интегрирование с помощью формулы Гаусса:
+	\[
+	I_n = \dfrac{b - a}{2} \sum_{k=1}^{n}c_kf(x_k) \qquad x_k = \dfrac{b+a}{2} + \dfrac{b - a}{2} \cdot t_k
+	\]
+	\makesubsection{Решение}
+	В случае варианта 16 имеем следующие условия:
+	\begin{multline*}
+		n = 4, \qquad t_{1, 4} = \pm 0.861136 \qquad t_{2, 3} = \pm 0.339981 \\
+		c_{1, 4} = 0.347855 \qquad c_{2, 3} = 0.652145\\
+	\end{multline*}
+	Разделим отрезок $[a, b]$ сначала на 2 части, потом 4 части и сравним их:
+	\[
+	I_{2n}(a, b) = I_n(a, m) + I_n(m, b) \qquad m = \dfrac{a + b}{2}
+	\]
+	\begin{multline}
+		I_{4n} = I_{2n}(a, m) + I_{2n}(m, b) = I_n(a, d) + I_n(d, m) + I_n(m, c) + I_n(c, b)\\
+		d = \dfrac{a + m}{2} \quad c = \dfrac{m + b}{2}\\
+	\end{multline}
+	Получаем следующие значения: $I_{4n} = 1.1661089745138693$ и $I_{2n} = 1.1661089738845032$. Сравнивая разницу между ними получаем: $\Delta I = 6.293661147793728e-10$	
+
+	\makesection{Приложения}
+	\begin{lstlisting}[language=Python, caption={Реализация численного интегрирования}]
+		import math
+		
+		n = 4
+		t = [
+			0.861136,
+			0.339981,
+			-0.339981,
+			-0.861136
+		]
+		c = [
+			0.347855,
+			0.652145,
+			0.652145,
+			0.347855
+		]
+		a = 0.5
+		b = 1.0
+		
+		
+		def func(x):
+			return x ** 2 + math.log(x + 5)
+		
+		
+		def find_x(a, b, t):
+			return (b + a) / 2 + (b - a) * t / 2
+		
+		
+		def find_I(a, b):
+			return ((b - a) / 2) * (c[0] * func(find_x(a, b, t[0])) +
+									c[1] * func(find_x(a, b, t[1])) +
+									c[2] * func(find_x(a, b, t[2])) +
+									c[3] * func(find_x(a, b, t[3])))
+		
+		
+		def main():
+			I_n = find_I(a, b)
+			m = (a + b) / 2
+			I_2n = find_I(a, m) + find_I(m, b)
+			eps = 0.000001
+			I_4n = find_I(a, (a + m) / 2) + find_I((a + m) / 2, m) + find_I(m, (m + b) / 2) + find_I((m + b) / 2, b)
+			print('I_n =',I_n)
+			print('I_2n =',I_2n)
+			print('I_4n =',I_4n)
+			print('I_4n - I_2n =',I_4n - I_2n)
+		
+		
+		if __name__ == '__main__':
+			main()
+	\end{lstlisting}
+	\makesection{Вывод}
+	В данной лабораторной работе было произведено вычисление интеграла с помощью формулы Гаусса.
+		
+\end{document}

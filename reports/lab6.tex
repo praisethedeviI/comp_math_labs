@@ -1,0 +1,103 @@
+\documentclass[14pt, a4paper, fleqn]{extarticle}
+\usepackage[russian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, mathtools}
+\usepackage{multicol}
+\usepackage{tabularx}
+
+\usepackage{graphicx}
+
+\usepackage{style}
+
+\begin{document}
+	\createtitle{6}
+	\tableofcontents
+	\pagebreak
+	\makesection{Метод монотонной прогонки}
+	\makesubsection{Постановка задачи}
+	Требуется найти решение системы линейных алгебраических уравнений (СЛАУ). При этом СЛАУ имеет специальный вид:
+	\[
+	A_kx_{k-1} + B_kx_k + C_kx_{k+1} = F_k, \qquad k = 1,...,N  \qquad A_1 = C_N = 0
+	\]
+	\makesubsection{Решение}
+	Будем решать данную СЛАУ:
+	\[
+	A = \begin{pmatrix}
+		2 & 2 & 0  \\
+		1 & 2 & 1  \\
+		1 & 2 & 1  \\
+		0 & 2 & 1  \\
+	\end{pmatrix} \qquad
+	\vec{b} = \begin{pmatrix}
+		2 \\
+		4 \\
+		4 \\
+		3 \\
+	\end{pmatrix}
+	\]
+	Для начала найдем все $\alpha$ и $\beta$, исходя из формул:
+	\begin{multline*}
+		\alpha_2 = -\dfrac{C_1}{B_1} \qquad \beta = \dfrac{F_1}{B_1} \\
+		\alpha_k = - \dfrac{C_k}{B_k + A_k\alpha_k} \qquad \beta = \dfrac{F_k - A_k\beta_k}{B_k + A_k\alpha_k}\\
+	\end{multline*}
+	Предположим, что:
+	\[
+	x_{k-1} = \alpha_kx_k + \beta_k
+	\]
+	Тогда решения будем искать по следующим формулам:
+	\begin{multline*}
+		x_k = \alpha_kx_{k-1} + \beta_k \\
+	\end{multline*}
+	Чтобы найти переменную в $N$ позиции будем использовать данную формулу:
+	\[
+	x_N = \dfrac{F_N - A_N\beta_N}{A_N\alpha_N + B_N}
+	\]
+	Следуя из всех формул выше, мы можем найти ответ СЛАУ:
+	\[
+	\vec{x} = 
+	\begin{pmatrix}
+		2\\
+		-1\\
+		4\\
+		-3\\
+	\end{pmatrix}
+	\]
+	\makesection{Приложения}
+	\begin{lstlisting}[language=Python, caption={Реализация метода прогонки}]
+		low = [0, 1, 1, 2]
+		main = [2, 2, 2, 2]
+		high = [1, 1, 1, 0]
+		result = [3, 4, 4, 2]
+		
+		alpha = [0]
+		betta = [0]
+		alpha.append(-high[0] / main[0])
+		betta.append(result[0] / main[0])
+		
+		n = 4
+		i = 1
+		
+		while i < n:
+			alpha.append(-high[i] / (main[i] + low[i] * alpha[i]))
+			betta.append((-low[i] * betta[i] + result[i]) / (main[i] + low[i] * alpha[i]))
+			i += 1
+		
+		print(alpha)
+		print(betta)
+		
+		x = [(-low[n - 1] * betta[n - 1] + result[n - 1]) / (main[n - 1] + low[n - 1] * alpha[n - 1])]
+		i = n - 1
+		x_count = 0
+		
+		while i != 0:
+			x.append(alpha[i] * x[x_count] + betta[i])
+			i -= 1
+			x_count += 1
+		
+		x.reverse()
+		print(x)
+	\end{lstlisting}
+	\makesection{Вывод}
+	В данной лабораторной работе было произведено вычисление решения СЛАУ с помощью метода прогонки.
+			
+\end{document}

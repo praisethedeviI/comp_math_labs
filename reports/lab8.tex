@@ -1,0 +1,67 @@
+\documentclass[14pt, a4paper, fleqn]{extarticle}
+\usepackage[russian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, mathtools}
+\usepackage{multicol}
+\usepackage{tabularx}
+
+\usepackage{graphicx}
+
+\usepackage{style}
+
+\begin{document}
+	\createtitle{7}
+	\tableofcontents
+	\pagebreak
+	\makesection{Метод хорд и касательных}
+	\makesubsection{Постановка задачи}
+	Вариант 16. Необходимо найти корни данного уравнения численным методом хорд:
+	\[
+	0 = 0.5x^2 - \cos(2x)
+	\]
+	\makesubsection{Решение}
+	Воспользуемся расчетной формулой метода хорд, которая имеет вид:
+	\[
+	x_n = x_{n-1} - \dfrac{f(x_{n-1})}{f'(x_{n-1})}
+	\]
+	Производная от данной нам функции $y = 0.5x^2 - \cos(2x)$ имеет вид:
+	\[
+	y' = x + 2\sin(2x)
+	\]
+	Найдем корни уравнения с помощью средств компьютерной математики:
+	\[
+	x_{1, 2} \approx \pm 0.6716432093903656
+	\]
+	
+	\makesection{Приложения}
+	\begin{lstlisting}[language=Python, caption={Реализация метода хорд}]
+		import math
+		
+		
+		def func(x):
+			return 0.5 * x ** 2 - math.cos(2 * x)
+		
+		
+		def dif(x):
+			return x + 2 * math.sin(2*x)
+		
+		
+		def main():
+			x = [5]
+			for i in range(100):
+				x.append(x[-1] - func(x[-1])/ dif(x[-1]))
+			print(x[-1])
+		
+			x = [-5]
+			for i in range(100):
+				x.append(x[-1] - func(x[-1]) / dif(x[-1]))
+			print(x[-1])
+		
+		
+		if __name__ == '__main__':
+			main()
+	\end{lstlisting}
+	\makesection{Вывод}		
+	В данной лабораторной работе с помощью средств компьютерной математики нашли численным методом хорд корни уравнения.
+	
+\end{document}
