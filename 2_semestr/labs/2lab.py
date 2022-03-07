@@ -1,12 +1,11 @@
-import math as m
-import numpy as np
-
-
 class SLE:
     def __init__(self, matrix: [[]], vector: []):
         self.m = matrix
         self.v = vector
         self.dim = len(self.v)
+
+    def get_answer(self):
+        return self.v
 
     def solve(self):
         for i in range(self.dim - 1):
@@ -42,8 +41,7 @@ def main():
         [1, 2, -1]
     ]
     vec = [-1, 13, 9]
-    print(SLE(mat, vec).solve())
-
+    print(*SLE(mat, vec).solve()[1])
 
 
 if __name__ == '__main__':
