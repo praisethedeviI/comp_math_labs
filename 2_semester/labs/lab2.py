@@ -20,11 +20,11 @@ class SLE:
         return self.m, self.v
 
     def reverse(self):
-        self.v[-1] /= self.m[-1][-1]
-        self.m[-1][-1] = 1
 
         for i in range(1, self.dim):
             for j in range(i + 1, self.dim + 1):
+                self.v[-i] /= self.m[-i][-i]
+                self.m[-i][-i] = 1
                 factor = self.m[-j][-i]
                 self.v[-j] -= self.v[-i] * factor
                 for k in range(i, self.dim + 1):

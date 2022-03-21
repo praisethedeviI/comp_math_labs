@@ -31,14 +31,14 @@ def LU_decomposition(matrix: [[]]):  # L'U' = A' - vw^t / a_11
     return L, U
 
 
-def solve(L: [[]], U: [[]], b:[]):
+def solve_LU(L: [[]], U: [[]], b: []):
     sle = SLE(L, b)
     sle.solve()
     y = sle.get_vec()
     sle = SLE(U, y)
     sle.reverse()
     x = sle.get_vec()
-    print(x)
+    return x
 
 
 def main():
@@ -49,7 +49,7 @@ def main():
     ]
     b = [1, 1, 1]
     L, U = LU_decomposition(matrix)
-    print(solve(L, U, b))
+    print(solve_LU(L, U, b))
 
 
 if __name__ == '__main__':

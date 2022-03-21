@@ -1,11 +1,12 @@
 import math
 from numpy import linalg, matmul
 
-
 b = [1 for i in range(10)]
-a = [[ 1,  0, -1],
-       [ 0,  1,  0],
-       [ 1,  0,  1]]
+a = [
+    [1, 0, -1],
+    [0, 1, 0],
+    [1, 0, 1]
+]
 
 
 def mat_gilbert(dim):  # a_ij = 1/(i+j-1)
