@@ -1,4 +1,7 @@
-def LU_decomposition(matrix: [[]]):
+from lab2 import SLE
+
+
+def LU_decomposition(matrix: [[]]):  # L'U' = A' - vw^t / a_11
     n = len(matrix)
     U = []
     L = []
@@ -28,13 +31,25 @@ def LU_decomposition(matrix: [[]]):
     return L, U
 
 
+def solve(L: [[]], U: [[]], b:[]):
+    sle = SLE(L, b)
+    sle.solve()
+    y = sle.get_vec()
+    sle = SLE(U, y)
+    sle.reverse()
+    x = sle.get_vec()
+    print(x)
+
+
 def main():
     matrix = [
         [1, 2, 3],
         [2, 5, 1],
         [4, 3, 1]
     ]
-    print(LU_decomposition(matrix))
+    b = [1, 1, 1]
+    L, U = LU_decomposition(matrix)
+    print(solve(L, U, b))
 
 
 if __name__ == '__main__':

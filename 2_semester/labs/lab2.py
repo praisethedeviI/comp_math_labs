@@ -14,6 +14,12 @@ class SLE:
                 self.v[j] -= self.v[i]
                 for k in range(i, self.dim):
                     self.m[j][k] -= self.m[i][k]
+
+        self.reverse()
+
+        return self.m, self.v
+
+    def reverse(self):
         self.v[-1] /= self.m[-1][-1]
         self.m[-1][-1] = 1
 
@@ -24,14 +30,18 @@ class SLE:
                 for k in range(i, self.dim + 1):
                     self.m[-j][-k] -= self.m[-i][-k] * factor
 
-        return self.m, self.v
-
     def __normalize(self, start):
         for i in range(start, self.dim):
             div = self.m[i][start]
             self.v[i] /= div
             for j in range(self.dim):
                 self.m[i][j] /= div
+
+    def get_mat(self):
+        return self.m
+
+    def get_vec(self):
+        return self.v
 
 
 def main():
