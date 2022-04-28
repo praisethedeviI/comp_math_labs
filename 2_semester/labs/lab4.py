@@ -48,6 +48,7 @@ def main():
     ]
     vec = [10, 50, 150]
     T = square_decomp(matrix)
+    print(T)
     print(solve_LU(transpose(T), T, vec))
 
 
