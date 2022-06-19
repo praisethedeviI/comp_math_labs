@@ -1,0 +1,69 @@
+\documentclass[14pt, a4paper, fleqn]{extarticle}
+\usepackage[russian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, mathtools}
+\usepackage{multicol}
+\usepackage{tabularx}
+
+\usepackage{graphicx}
+
+\usepackage{style}
+
+\begin{document}
+	\createtitle{9}
+	\tableofcontents
+	\pagebreak
+	\makesection{Введение}	
+	В данной лабораторной работе необходимо найти решение СЛАУ с помощью метода релаксации.
+	\makesection{Постановка задачи}
+	Дана матрица $A$ и вектор $B$. Необходимо решить систему $Ax = B$ с помощью итерационного метода релаксации.
+	\makesection{Алгоритм работы}	
+	\begin{enumerate}
+		\item Для нахождения элементов решения $x$ методом Якоби будем пользоваться следующей формулой:
+		$$
+		x_i^{(k+1)} = \dfrac{\omega}{a_{ii}} \left( b_i - \sum_{j = 1}^{i-1}a_{ij}x^{(k+1)}_j - \sum_{j = i + 1}^{n}a_{ij}x^{(k)}_j \right) + (1 - \omega) \cdot x^{(k)}_i
+		$$
+		\item $x^{(0)}$ возьмем вектор размером $n$, которая состоит из нулей; $i = \overline{1,n}$.
+		\item Параметр $\omega$ определяет релаксацию. При $\omega > 1$ -- метод верхней релаксации, при равном 1 -- метод Зейделя, меньше 1 -- метод нижней релаксации.
+		\item Используя метод, установим максимальное количество итераций. В нашем случае $k = 10$.
+	\end{enumerate}
+	\pagebreak
+	\makesection{Приложения}
+	
+	\begin{lstlisting}[language=Python, caption={Компьютерная реализация алгоритма}]
+		import numpy as np
+		
+		
+		def relax_method(A, f, it=10):
+			n = len(f)
+			xp = x = np.array([0.0] * n)
+			w = 1.2
+		
+			for k in range(it):
+				for i in range(n):
+					S1 = sum((A[i, j] * x[j] for j in range(i)))
+					S2 = sum((A[i, j] * xp[j] for j in range(i + 1, n)))
+					x[i] = (w * (f[i] - S1 - S2) + (1 - w) * A[i, i] * xp[i]) / A[i, i]
+		
+				xp = x
+		
+			return x
+		
+		
+		def main():
+			mat = np.matrix([
+				[9.2, 2.5, -3.7],
+				[0.9, 9., 0.2],
+				[4.5, -1.6, -10.3]
+			])
+			vec = np.array([-17.5, 4.4, -22.1])
+		
+			print(relax_method(mat, vec))
+		
+		
+		if __name__ == '__main__':
+			main()
+	\end{lstlisting}
+	\makesection{Вывод}
+	В данной лабораторной работе был реализован итерационный метод релаксации для решения СЛАУ.
+\end{document}

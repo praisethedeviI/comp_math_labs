@@ -1,3 +1,5 @@
+import time
+
 class SLE:
     def __init__(self, matrix: [[]], vector: []):
         self.m = matrix
@@ -46,13 +48,20 @@ class SLE:
 
 def main():
     mat = [
-        [3, 2, -5],
-        [2, -1, 3],
-        [1, 2, -1]
+        [10, 3, 3, 1, 2, 1],
+        [1, 14, 1, 3, 5, 1],
+        [2, 1, 7, 1, 3, 2],
+        [1, 2, 2, 12, 3, 1],
+        [1, 4, 2, 2, 9, 1],
+        [2, 1, 2, 5, 4, 8],
     ]
-    vec = [-1, 13, 9]
+    vec = [4, 1, 4, 6, 3, 6]
+    print(*vec)
     print(*SLE(mat, vec).solve()[1])
 
 
 if __name__ == '__main__':
+    start_time = time.time()
+    print(time.time_ns())
     main()
+    print("--- %s seconds ---" % round(time.time() - start_time, 10))

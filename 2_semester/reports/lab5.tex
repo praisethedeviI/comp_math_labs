@@ -1,0 +1,86 @@
+\documentclass[14pt, a4paper, fleqn]{extarticle}
+\usepackage[russian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, mathtools}
+\usepackage{multicol}
+\usepackage{tabularx}
+
+\usepackage{graphicx}
+
+\usepackage{style}
+
+\begin{document}
+	\createtitle{5}
+	\tableofcontents
+	\pagebreak
+	\makesection{Введение}		
+	В данной лабораторной работе необходимо найти решение уравнения с помощью QR-разложения матрицы
+	
+	\makesection{Постановка задачи}
+	Дана матрица $A$, необходимо ее разложить на $A = QR$ и решить СЛАУ $Ax = B$.
+	
+	\makesection{Алгоритм работы}
+	\begin{enumerate}
+		\item С помощью QR-разложения мы можем представить матрицу $A$ в виде $Q \cdot R$, где $Q$ -- ортогональная матрица ($QQ^T = I, Q^T = Q^{-1}$), а $R$ -- верхнеугольная матрица.
+		\item Чтобы найти матрицу $Q$, найдем матрицу $P = I - 2\dfrac{p, x}{p, p}p$, где $p$ является вектором нормали.
+		\item Матрицу $R$ несложно вычислить, зная $A = QR$, следовательно матрица вычислятся по формуле $R = Q^TA$.
+		\item Решение СЛАУ будет следующим: $x = R^{-1}Q^TB$.	 	
+	\end{enumerate}
+	\makesection{Приложения}
+	\begin{lstlisting}[language=Python, caption={Компьютерная реализация алгоритма}]
+		import numpy as np
+		from lab2 import SLE
+		
+		
+		def QR(A):
+			def step(a):
+				v = a / (a[0] + np.copysign(np.linalg.norm(a), a[0]))
+				v[0] = 1
+				P = np.eye(a.shape[0])
+				P -= (2 / np.dot(v, v)) * np.dot(v[:, None], v[None, :])
+				return P
+		
+			m, n = A.shape
+			Q = np.eye(m)
+			for i in range(n):
+				P = np.eye(m)
+				P[i:, i:] = step(A[i:, i])
+				Q = np.dot(Q, P)
+				A = np.dot(P, A)
+			return np.matrix(Q), np.matrix(A)
+		
+		
+		def solve(A, b):
+			Q, R = QR(A)
+			Q = Q.tolist()
+			sle = SLE(Q, b.tolist())
+			sle.solve()
+			y = sle.get_vec()
+			sle = SLE(R.tolist(), y)
+			sle.reverse()
+			x = sle.get_vec()
+			return x
+		
+		
+		def main():
+			mat = np.array((
+				[1, 2, 4],
+				[3, 3, 2],
+				[4, 1, 3]
+			), dtype=float)
+		
+			vec = np.array([4, 2, 3])
+		
+			print(solve(mat, vec.copy()))
+		
+			sle = SLE(mat.tolist(), vec.tolist())
+			print(sle.solve()[1])
+		
+		
+		if __name__ == '__main__':
+			main()
+		
+	\end{lstlisting}
+	\makesection{Вывод}
+	В данной лабораторной работе было произведено вычисление решения СЛАУ с помощью QR-разложения.
+\end{document}

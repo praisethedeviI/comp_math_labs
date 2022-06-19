@@ -42,11 +42,12 @@ def transpose(m: [[]]):
 
 def main():
     matrix = [
-        [1, 2, 4],
-        [2, 13, 23],
-        [4, 23, 77]
+        [10.9, 1.2, 2.1, 0.9],
+        [1.2, 11.2, 1.5, 2.5],
+        [2.1, 1.5, 9.8, 1.3],
+        [0.9, 2.5, 1.3, 12.1]
     ]
-    vec = [10, 50, 150]
+    vec = [-7.0, 5.3, 10.3, 24.6]
     T = square_decomp(matrix)
     print(T)
     print(solve_LU(transpose(T), T, vec))

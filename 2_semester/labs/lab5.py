@@ -2,53 +2,49 @@ import numpy as np
 from lab2 import SLE
 
 
+def QR(A):
+    def step(a):
+        v = a / (a[0] + np.copysign(np.linalg.norm(a), a[0]))
+        v[0] = 1
+        P = np.eye(a.shape[0])
+        P -= (2 / np.dot(v, v)) * np.dot(v[:, None], v[None, :])
+        return P
 
-def qr_decomp(A: [[]]):
-    A = np.array(A)
-    Q = gs(A, row_vecs=False)
-    R = np.dot(Q.T, A)
-    print(np.dot(Q, R))
-    return Q, R
-
-# https://gist.github.com/iizukak/1287876?permalink_comment_id=1348649#gistcomment-1348649
-def gs(X: [[]], row_vecs=True, norm=True):
-    X = np.array(X)
-    if not row_vecs:
-        X = X.T
-    Y = X[0:1, :].copy()
-    for i in range(1, X.shape[0]):
-        proj = np.diag(
-            (X[i, :].dot(Y.T) / np.linalg.norm(Y, axis=1) ** 2).flat).dot(Y)
-        Y = np.vstack((Y, X[i, :] - proj.sum(0)))
-    if norm:
-        Y = np.diag(1 / np.linalg.norm(Y, axis=1)).dot(Y)
-    if row_vecs:
-        return Y
-    else:
-        return Y.T
+    m, n = A.shape
+    Q = np.eye(m)
+    for i in range(n):
+        P = np.eye(m)
+        P[i:, i:] = step(A[i:, i])
+        Q = np.dot(Q, P)
+        A = np.dot(P, A)
+    return np.matrix(Q), np.matrix(A)
 
 
-def solve_QR(Q: [[]], R: [[]], b: []):
-    sle = SLE(Q, b)
+def solve(A, b):
+    Q, R = QR(A)
+    Q = Q.tolist()
+    sle = SLE(Q, b.tolist())
     sle.solve()
-    print(sle.get_vec())
     y = sle.get_vec()
-    sle = SLE(R, y)
+    sle = SLE(R.tolist(), y)
     sle.reverse()
     x = sle.get_vec()
     return x
 
 
 def main():
-    A = [
+    mat = np.array((
         [1, 2, 4],
         [3, 3, 2],
         [4, 1, 3]
-    ]
-    b = [1, 2, 3]
-    Q, R = qr_decomp(A)
-    print(Q, R)
-    # print(solve_QR(Q, R, b))
+    ), dtype=float)
+
+    vec = np.array([4, 2, 3])
+
+    print(solve(mat, vec.copy()))
+
+    sle = SLE(mat.tolist(), vec.tolist())
+    print(sle.solve()[1])
 
 
 if __name__ == '__main__':

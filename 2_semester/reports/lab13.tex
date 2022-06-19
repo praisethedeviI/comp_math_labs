@@ -1,0 +1,87 @@
+\documentclass[14pt, a4paper, fleqn]{extarticle}
+\usepackage[russian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, mathtools}
+\usepackage{multicol}
+\usepackage{tabularx}
+
+\usepackage{graphicx}
+
+\usepackage{style}
+
+\begin{document}
+	\createtitle{13}
+	\tableofcontents
+	\pagebreak
+	\makesection{Введение}	
+	В данной лабораторной работе необходимо найти собственные значения матрицы с помощью метода вращений.
+	\makesection{Постановка задачи}
+	Дана матрица $A$. Необходимо найти все собственные значения $\lambda$ данной матрицы методом вращений.
+	\makesection{Алгоритм работы}	
+		\begin{enumerate}
+			\item Найдем коэффициенты максимального абсолютно	 элемента матрицы, учитывая $i < j$. Коэффициенты обозначим за $l$ и $m$.
+			\item Построим единичную матрицу такого же размера, как и матрица $A$, но при этом определим на $l$ и $m$ элементы. Матрица примет такой вид:
+			$$ T = 
+			\begin{pmatrix}
+				1 & ... & ... & ... & ... & ... & 0 \\
+				... & ... & ... & ... & ... & ... & ... \\
+				... & ... & \cos \varphi & ... & -\sin \varphi & ... & ... \\
+				... & ... & ... & ... & ... & ... & ... \\
+				... & ... & \sin \varphi & ... & \cos \varphi & ... & ... \\
+				... & ... & ... & ... & ... & ... & ... \\
+				0 & ... & ... & ... & ... & ... & 1 \\
+			\end{pmatrix}
+			$$
+			\item Найдем угол $\varphi = \dfrac{\arctan\left( \frac{2a_{lm}}{a_{ll} - a{mm}} \right) }{2} $.
+			\item Вычислим $A^{(k+1)} = T^TA^{(k)}T $.
+			\item По итогу, через некоторое количество итераций  $k = 1, 2, 3....$(В нашем случае $k  = 15$) на главной диагонали матрицы $A^{(k)}$ будут располагаться приближенные к точному собственные значения матрицы $A$.
+		\end{enumerate}
+	\makesection{Приложения}
+	
+	\begin{lstlisting}[language=Python, caption={Компьютерная реализация алгоритма}]
+		import numpy as np
+		
+		
+		def get_max(A):
+			index = (1, 0)
+			for i in range(A.shape[0]):
+				for j in range(i):
+					if abs(A[index]) < abs(A[i, j]):
+						index = (i, j)
+			return index
+		
+		
+		def rotation_method(A):
+		
+			for k in range(15):
+				l, m = get_max(A)
+				phi = np.arctan(2 * A[l, m] / (A[l, l] - A[m, m])) / 2
+				T = np.eye(A.shape[0])
+				T[l, l] = np.cos(phi)
+				T[l, m] = -np.sin(phi)
+				T[m, l] = np.sin(phi)
+				T[m, m] = np.cos(phi)
+		
+				A = T.T * A * T
+		
+			return A
+		
+		
+		def main():
+			vec = np.matrix([
+				[-0.168700, 0.353699, 0.008540, 0.733624],
+				[0.353699, 0.056519, 0.723182, -0.076440],
+				[0.008540, 0.723182, 0.015938, 0.342333],
+				[0.733624, -0.076440, 0.342333, -0.045744]
+			])
+			np.set_printoptions(precision=4, suppress=True)
+		
+			print(rotation_method(vec).diagonal())
+		
+		
+		if __name__ == '__main__':
+			main()
+	\end{lstlisting}
+	\makesection{Вывод}
+	В данной лабораторной работе был реализован поиск собственных значений с помощью метода вращений.
+\end{document}

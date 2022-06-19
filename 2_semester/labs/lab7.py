@@ -4,7 +4,7 @@ eps = 10**(-5)
 def simple_iter(mat, vec, e=eps):
     dim = len(vec)
     x = list()
-    x.append([0 for i in range(dim)])
+    x.append([0 for _ in range(dim)])
     it = 0
     flag = True
     while flag:
